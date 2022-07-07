@@ -69,15 +69,8 @@ median_d20.innerText = "NA";
  * EVENT LISTENERS *
  *******************/
 image_d6.addEventListener("click", d6RollFunction);
-doubled6Section.addEventListener("click", doubleRollFunction);
-//Double dice split click events//
-// image_doubleD61.addEventListener("click", function () {
-//   console.log("DoubleD61 Clicked!");
-// });
 
-// image_doubleD62.addEventListener("click", function () {
-//   console.log("DoubleD62 Clicked!");
-// });
+doubled6Section.addEventListener("click", doubleRollFunction);
 
 image_d12.addEventListener("click", d12RollFunction);
 
@@ -308,7 +301,6 @@ function medianFunction(array, id) {
   array.sort(function (a, b) {
     return a - b;
   });
-  console.log(array);
   if (array.length % 2 === 0) {
     let total = 0;
     let medianTotal = 0;
@@ -318,7 +310,6 @@ function medianFunction(array, id) {
       total = total + evenMedian[i];
     }
     medianTotal = Math.round(total / 2);
-    console.log(medianTotal);
     id.innerText = medianTotal;
   } else {
     for (let i = 0; i < array.length / 2; i++) {
