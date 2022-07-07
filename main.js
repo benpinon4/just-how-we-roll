@@ -28,17 +28,21 @@ const getRandomNumber = function (max) {
 // let button_d6 = document.querySelector("#d6-button");
 let image_d6 = document.querySelector("#d6-roll");
 let mean_d6 = document.querySelector("#d6-rolls-mean");
+let median_d6 = document.querySelector("#d6-rolls-median");
 
 let doubled6Section = document.querySelector("#double-d6-buttons");
 let image_doubleD61 = document.querySelector("#double-d6-roll-1");
 let image_doubleD62 = document.querySelector("#double-d6-roll-2");
 let mean_double = document.querySelector("#double-d6-rolls-mean");
+let median_double = document.querySelector("#double-d6-rolls-median");
 
 let image_d12 = document.querySelector("#d12-roll");
 let mean_d12 = document.querySelector("#d12-rolls-mean");
+let median_d12 = document.querySelector("#d12-rolls-median");
 
 let image_d20 = document.querySelector("#d20-roll");
 let mean_d20 = document.querySelector("#d20-rolls-mean");
+let median_d20 = document.querySelector("#d20-rolls-median");
 
 let resetButton = document.querySelector("#reset-button");
 
@@ -54,6 +58,12 @@ mean_d6.innerText = "NA";
 mean_double.innerText = "NA";
 mean_d12.innerText = "NA";
 mean_d20.innerText = "NA";
+
+//starting medians//
+median_d6.innerText = "NA";
+median_double.innerText = "NA";
+median_d12.innerText = "NA";
+median_d20.innerText = "NA";
 
 /*******************
  * EVENT LISTENERS *
@@ -79,7 +89,7 @@ resetButton.addEventListener("click", resetFunction);
  * RESET FUNCTION *
  ******************/
 function resetFunction() {
-    //empty all global variable arrays
+  //empty all global variable arrays
   sixes = [];
   doubleSixes = [];
   twelves = [];
@@ -97,6 +107,12 @@ function resetFunction() {
   mean_double.innerText = "NA";
   mean_d12.innerText = "NA";
   mean_d20.innerText = "NA";
+
+  //change dice dice mean to NA
+  median_d6.innerText = "NA";
+  median_double.innerText = "NA";
+  median_d12.innerText = "NA";
+  median_d20.innerText = "NA";
 }
 /****************************
  * CLICK HANDLING FUNCTIONS *
@@ -104,7 +120,7 @@ function resetFunction() {
 //D6 Roll Function//
 function d6RollFunction() {
   let result = getRandomNumber(6);
-    if (result === 1) {
+  if (result === 1) {
     image_d6.src = "./images/d6/1.png";
   } else if (result === 2) {
     image_d6.src = "./images/d6/2.png";
@@ -120,13 +136,14 @@ function d6RollFunction() {
 
   sixes.push(result);
   d6Mean();
+  medianFunction(sixes, median_d6);
 }
 
 //Double Roll Function//
 function doubleRollFunction() {
   let total = 0;
   let result1 = getRandomNumber(6);
-    if (result1 === 1) {
+  if (result1 === 1) {
     image_doubleD61.src = "./images/d6/1.png";
   } else if (result1 === 2) {
     image_doubleD61.src = "./images/d6/2.png";
@@ -140,7 +157,7 @@ function doubleRollFunction() {
     image_doubleD61.src = "./images/d6/6.png";
   }
   let result2 = getRandomNumber(6);
-    if (result2 === 1) {
+  if (result2 === 1) {
     image_doubleD62.src = "./images/d6/1.png";
   } else if (result2 === 2) {
     image_doubleD62.src = "./images/d6/2.png";
@@ -156,6 +173,7 @@ function doubleRollFunction() {
   total = result1 + result2;
   doubleSixes.push(total);
   double6Mean();
+  medianFunction(doubleSixes, median_double)
 }
 
 //D12 Roll Function//
@@ -189,6 +207,7 @@ function d12RollFunction() {
 
   twelves.push(result);
   d12Mean();
+  medianFunction(twelves, median_d12);
 }
 //20 side dice Roll//
 function d20RollFunction() {
@@ -238,6 +257,7 @@ function d20RollFunction() {
 
   twenties.push(result);
   d20Mean();
+  medianFunction(twenties, median_d20);
 }
 
 /****************
@@ -278,4 +298,32 @@ function d20Mean() {
   }
   total = total / twenties.length;
   mean_d20.innerText = Math.round(total);
+}
+
+//median function one sizes fits all//
+
+function medianFunction(array, id) {
+  let evenMedian = [];
+  let oddMedian = [];
+  array.sort(function (a, b) {
+    return a - b;
+  });
+  console.log(array);
+  if (array.length % 2 === 0) {
+    let total = 0;
+    let medianTotal = 0;
+    evenMedian.push(array[array.length / 2 - 1]);
+    evenMedian.push(array[array.length / 2]);
+    for (let i = 0; i < evenMedian.length; i++) {
+      total = total + evenMedian[i];
+    }
+    medianTotal = Math.round(total / 2);
+    console.log(medianTotal);
+    id.innerText = medianTotal;
+  } else {
+    for (let i = 0; i < array.length / 2; i++) {
+      oddMedian = array[i];
+    }
+    id.innerText = oddMedian;
+  }
 }
